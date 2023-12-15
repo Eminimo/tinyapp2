@@ -81,16 +81,6 @@ app.get("/u/:id", (req, res) => {
   }
 });
 
-// Start the server and listen on the specified port
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
-
-// Catch-all for undefined routes to handle 404 errors
-app.get("*", (req, res) => {
-  res.status(404).send("Page not found.");
-});
-
 // Route to handle the deletion of a URL
 app.post("/urls/:id/delete", (req, res) => {
   const id = req.params.id;
@@ -100,4 +90,25 @@ app.post("/urls/:id/delete", (req, res) => {
   } else {
     res.status(404).send("URL not found.");
   }
+});
+
+// New Route to update a specific short URL
+app.post("/urls/:id", (req, res) => {
+  const id = req.params.id;
+  if (urlDatabase.hasOwnProperty(id)) {
+    urlDatabase[id] = req.body.longURL; // Update the long URL
+    res.redirect("/urls");
+  } else {
+    res.status(404).send("URL not found.");
+  }
+});
+
+// Start the server and listen on the specified port
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
+
+// Catch-all for undefined routes to handle 404 errors
+app.get("*", (req, res) => {
+  res.status(404).send("Page not found.");
 });
