@@ -90,3 +90,14 @@ app.listen(PORT, () => {
 app.get("*", (req, res) => {
   res.status(404).send("Page not found.");
 });
+
+// Route to handle the deletion of a URL
+app.post("/urls/:id/delete", (req, res) => {
+  const id = req.params.id;
+  if (urlDatabase[id]) {
+    delete urlDatabase[id]; // Use delete operator to remove the URL
+    res.redirect("/urls");  // Redirect back to the URLs index page
+  } else {
+    res.status(404).send("URL not found.");
+  }
+});
